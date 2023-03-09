@@ -1,0 +1,22 @@
+.input_video {
+  visibility:hidden
+}
+.output_canvas {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20%;
+  height: 50%;
+  padding:10px;
+  padding-right:50px;
+}
+html {
+   margin: 0px;
+   height: 100%;
+   width: 100%;
+}
+body {
+   margin: 0px;
+   min-height: 100%;
+   width: 100%;
+}

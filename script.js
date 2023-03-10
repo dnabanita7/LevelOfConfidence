@@ -24,6 +24,12 @@ const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 
+// Loading models
+async () => {
+await faceapi.loadSsdMobilenetv1Model(MODEL_URL)
+await faceapi.loadFaceLandmarkModel(MODEL_URL)
+await faceapi.loadFaceRecognitionModel(MODEL_URL)
+}
 
 // Initiate face mesh and set the options based on the params file
 const faceMesh = new FaceMesh({locateFile: (file) => {
@@ -42,6 +48,8 @@ faceMesh.onResults(onResults);
 const camera = new Camera(videoElement, {
   onFrame: async () => {
     await faceMesh.send({image: videoElement});
+    // video camera input
+  const results = await faceapi.detectAllFaces(video).withFaceLandmarks(true).withFaceDescriptors()
   }
 });
 

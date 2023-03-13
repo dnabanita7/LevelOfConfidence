@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 const imageUpload = document.getElementById('imageUpload')
 
 Promise.all([
@@ -49,16 +47,15 @@ function loadNamesOfStudents() {
 function loadLabeledImages() {
   var labels = [];
   for(let i=0; i<43; i++){
-    labels.push("students" + String(("0" + i).slice(-2)) + ".png")
+    labels.push('students' + String(('0' + i).slice(-2)))
   }
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
-      for (let i = 0; i <= 42; i++) {
-        const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/dnabanita7/LevelOfConfidence/master/labeled_images/${label}`)
-        const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-        descriptions.push(detections.descriptor)
-      }
+      const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/dnabanita7/LevelOfConfidence/master/labeled_images/${label}.png`)
+      const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
+      descriptions.push(detections.descriptor)
+      
 
       return new faceapi.LabeledFaceDescriptors(label, descriptions)
     })

@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const imageUpload = document.getElementById('imageUpload')
 
 Promise.all([
@@ -10,6 +12,7 @@ async function start() {
   const container = document.createElement('div')
   container.style.position = 'relative'
   document.body.append(container)
+  //const namesOfStudents = await loadNamesOfStudents()
   const labeledFaceDescriptors = await loadLabeledImages()
   const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6)
   let image
@@ -35,13 +38,24 @@ async function start() {
   })
 }
 
+function loadNamesOfStudents() {
+  fs.readFile('names.txt', (err, data) => {
+    if (err) throw err;
+ 
+    return data.toString();
+})
+}
+
 function loadLabeledImages() {
-  const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
+  var labels = [];
+  for(let i=0; i<43; i++){
+    labels.push("students" + String(("0" + i).slice(-2)) + ".png")
+  }
   return Promise.all(
     labels.map(async label => {
       const descriptions = []
       for (let i = 1; i <= 2; i++) {
-        const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/WebDevSimplified/Face-Recognition-JavaScript/master/labeled_images/${label}/${i}.jpg`)
+        const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/dnabanita7/LevelOfConfidence/master/labeled_images/${label}`)
         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
         descriptions.push(detections.descriptor)
       }
